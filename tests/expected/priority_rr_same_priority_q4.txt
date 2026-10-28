@@ -1,0 +1,42 @@
+Algorithm: Priority-RR, time quantum: 4, tasks: 5
+
+Running task = [D] [8] [10] for 4 units.
+Running task = [D] [8] [10] for 4 units.
+Running task = [D] [8] [10] for 2 units.
+Running task = [A] [5] [25] for 4 units.
+Running task = [B] [5] [15] for 4 units.
+Running task = [C] [5] [20] for 4 units.
+Running task = [A] [5] [25] for 4 units.
+Running task = [B] [5] [15] for 4 units.
+Running task = [C] [5] [20] for 4 units.
+Running task = [A] [5] [25] for 4 units.
+Running task = [B] [5] [15] for 4 units.
+Running task = [C] [5] [20] for 4 units.
+Running task = [A] [5] [25] for 4 units.
+Running task = [B] [5] [15] for 3 units.
+Running task = [C] [5] [20] for 4 units.
+Running task = [A] [5] [25] for 4 units.
+Running task = [C] [5] [20] for 4 units.
+Running task = [A] [5] [25] for 4 units.
+Running task = [A] [5] [25] for 1 units.
+Running task = [E] [1] [5] for 4 units.
+Running task = [E] [1] [5] for 1 units.
+
+Gantt chart:
+|  D   |  D   |  D   |  A   |  B   |  C   |  A   |  B   |  C   |  A   |  B   |  C   |
+0      4      8      10     14     18     22     26     30     34     38     42     46
+|  A   |  B   |  C   |  A   |  C   |  A   |  A   |  E   |  E   |
+46     50     53     57     61     65     69     70     74     75
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ A           5     25        0     10      70          70       45        10
+ B           5     15        0     14      53          53       38        14
+ C           5     20        0     18      65          65       45        18
+ D           8     10        0      0      10          10        0         0
+ E           1      5        0     70      75          75       70        70
+
+ Average turnaround time: 54.60
+ Average waiting time:    39.60
+ Average response time:   22.40
+ Total time: 75, CPU busy: 75, utilization: 100.0%
+ Throughput: 6.67 tasks per 100 time units, context switches: 16

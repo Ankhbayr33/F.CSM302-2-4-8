@@ -1,0 +1,43 @@
+Algorithm: Priority-RR, time quantum: 10, tasks: 8
+
+Running task = [T8] [10] [25] for 10 units.
+Running task = [T8] [10] [25] for 10 units.
+Running task = [T8] [10] [25] for 5 units.
+Running task = [T4] [5] [15] for 10 units.
+Running task = [T5] [5] [20] for 10 units.
+Running task = [T4] [5] [15] for 5 units.
+Running task = [T5] [5] [20] for 10 units.
+Running task = [T1] [4] [20] for 10 units.
+Running task = [T1] [4] [20] for 10 units.
+Running task = [T2] [3] [25] for 10 units.
+Running task = [T3] [3] [25] for 10 units.
+Running task = [T7] [3] [30] for 10 units.
+Running task = [T2] [3] [25] for 10 units.
+Running task = [T3] [3] [25] for 10 units.
+Running task = [T7] [3] [30] for 10 units.
+Running task = [T2] [3] [25] for 5 units.
+Running task = [T3] [3] [25] for 5 units.
+Running task = [T7] [3] [30] for 10 units.
+Running task = [T6] [1] [10] for 10 units.
+
+Gantt chart:
+|  T8  |  T8  |  T8  |  T4  |  T5  |  T4  |  T5  |  T1  |  T1  |  T2  |  T3  |  T7  |
+0      10     20     25     35     45     50     60     70     80     90     100    110
+|  T2  |  T3  |  T7  |  T2  |  T3  |  T7  |  T6  |
+110    120    130    140    145    150    160    170
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ T1          4     20        0     60      80          80       60        60
+ T2          3     25        0     80     145         145      120        80
+ T3          3     25        0     90     150         150      125        90
+ T4          5     15        0     25      50          50       35        25
+ T5          5     20        0     35      60          60       40        35
+ T6          1     10        0    160     170         170      160       160
+ T7          3     30        0    100     160         160      130       100
+ T8         10     25        0      0      25          25        0         0
+
+ Average turnaround time: 105.00
+ Average waiting time:    83.75
+ Average response time:   68.75
+ Total time: 170, CPU busy: 170, utilization: 100.0%
+ Throughput: 4.71 tasks per 100 time units, context switches: 15

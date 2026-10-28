@@ -1,0 +1,6 @@
+# one long task listed first, all arrive at 0 (convoy effect)
+Long, 5, 50
+S1, 5, 3
+S2, 5, 3
+S3, 5, 3
+S4, 5, 3

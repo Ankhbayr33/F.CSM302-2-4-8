@@ -1,0 +1,25 @@
+Algorithm: Priority-RR, time quantum: 10, tasks: 5
+
+Running task = [P1] [3] [8] for 8 units.
+Running task = [P2] [5] [4] for 4 units.
+Running task = [P4] [5] [5] for 5 units.
+Running task = [P3] [1] [9] for 9 units.
+CPU idle from 26 to 40.
+Running task = [P5] [9] [2] for 2 units.
+
+Gantt chart:
+|  P1  |  P2  |  P4  |  P3  | idle |  P5  |
+0      8      12     17     26     40     42
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ P1          3      8        0      0       8           8        0         0
+ P2          5      4        1      8      12          11        7         7
+ P3          1      9        2     17      26          24       15        15
+ P4          5      5        3     12      17          14        9         9
+ P5          9      2       40     40      42           2        0         0
+
+ Average turnaround time: 11.80
+ Average waiting time:    6.20
+ Average response time:   6.20
+ Total time: 42, CPU busy: 28, utilization: 66.7%
+ Throughput: 11.90 tasks per 100 time units, context switches: 4

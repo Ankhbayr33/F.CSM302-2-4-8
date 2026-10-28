@@ -1,0 +1,24 @@
+Algorithm: FCFS, tasks: 5
+
+Running task = [A] [5] [25] for 25 units.
+Running task = [B] [5] [15] for 15 units.
+Running task = [C] [5] [20] for 20 units.
+Running task = [D] [8] [10] for 10 units.
+Running task = [E] [1] [5] for 5 units.
+
+Gantt chart:
+|  A   |  B   |  C   |  D   |  E   |
+0      25     40     60     70     75
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ A           5     25        0      0      25          25        0         0
+ B           5     15        0     25      40          40       25        25
+ C           5     20        0     40      60          60       40        40
+ D           8     10        0     60      70          70       60        60
+ E           1      5        0     70      75          75       70        70
+
+ Average turnaround time: 54.00
+ Average waiting time:    39.00
+ Average response time:   39.00
+ Total time: 75, CPU busy: 75, utilization: 100.0%
+ Throughput: 6.67 tasks per 100 time units, context switches: 4

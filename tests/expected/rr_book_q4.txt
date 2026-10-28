@@ -1,0 +1,49 @@
+Algorithm: RR, time quantum: 4, tasks: 5
+
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T3] [3] [25] for 4 units.
+Running task = [T4] [3] [15] for 4 units.
+Running task = [T5] [10] [10] for 4 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T3] [3] [25] for 4 units.
+Running task = [T4] [3] [15] for 4 units.
+Running task = [T5] [10] [10] for 4 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T3] [3] [25] for 4 units.
+Running task = [T4] [3] [15] for 4 units.
+Running task = [T5] [10] [10] for 2 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T3] [3] [25] for 4 units.
+Running task = [T4] [3] [15] for 3 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T3] [3] [25] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T3] [3] [25] for 4 units.
+Running task = [T2] [2] [25] for 1 units.
+Running task = [T3] [3] [25] for 1 units.
+
+Gantt chart:
+|  T1  |  T2  |  T3  |  T4  |  T5  |  T1  |  T2  |  T3  |  T4  |  T5  |  T1  |  T2  |
+0      4      8      12     16     20     24     28     32     36     40     44     48
+|  T3  |  T4  |  T5  |  T1  |  T2  |  T3  |  T4  |  T1  |  T2  |  T3  |  T2  |  T3  |
+48     52     56     58     62     66     70     73     77     81     85     89     93
+|  T2  |  T3  |
+93     94     95
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ T1          4     20        0      0      77          77       57         0
+ T2          2     25        0      4      94          94       69         4
+ T3          3     25        0      8      95          95       70         8
+ T4          3     15        0     12      73          73       58        12
+ T5         10     10        0     16      58          58       48        16
+
+ Average turnaround time: 79.40
+ Average waiting time:    60.40
+ Average response time:   8.00
+ Total time: 95, CPU busy: 95, utilization: 100.0%
+ Throughput: 5.26 tasks per 100 time units, context switches: 25

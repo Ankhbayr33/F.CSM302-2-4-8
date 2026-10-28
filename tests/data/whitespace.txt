@@ -1,0 +1,5 @@
+# whitespace-separated fields and comments are accepted
+  # indented comment
+
+T1 4 20
+T2   2   25   5

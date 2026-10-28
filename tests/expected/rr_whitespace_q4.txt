@@ -1,0 +1,28 @@
+Algorithm: RR, time quantum: 4, tasks: 2
+
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T1] [4] [20] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T2] [2] [25] for 4 units.
+Running task = [T2] [2] [25] for 1 units.
+
+Gantt chart:
+|  T1  |  T1  |  T2  |  T1  |  T2  |  T1  |  T2  |  T1  |  T2  |  T2  |  T2  |  T2  |
+0      4      8      12     16     20     24     28     32     36     40     44     45
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ T1          4     20        0      0      32          32       12         0
+ T2          2     25        5      8      45          40       15         3
+
+ Average turnaround time: 36.00
+ Average waiting time:    13.50
+ Average response time:   1.50
+ Total time: 45, CPU busy: 45, utilization: 100.0%
+ Throughput: 4.44 tasks per 100 time units, context switches: 7

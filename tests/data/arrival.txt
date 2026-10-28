@@ -1,0 +1,6 @@
+# name, priority, burst, arrival (CPU is idle from 26 to 40)
+P1, 3, 8, 0
+P2, 5, 4, 1
+P3, 1, 9, 2
+P4, 5, 5, 3
+P5, 9, 2, 40

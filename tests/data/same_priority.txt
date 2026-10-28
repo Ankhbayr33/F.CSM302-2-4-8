@@ -1,0 +1,6 @@
+# several tasks with equal priority (Priority-RR)
+A, 5, 25
+B, 5, 15
+C, 5, 20
+D, 8, 10
+E, 1, 5

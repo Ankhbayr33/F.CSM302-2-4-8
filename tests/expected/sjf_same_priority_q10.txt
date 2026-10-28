@@ -1,0 +1,24 @@
+Algorithm: SJF, tasks: 5
+
+Running task = [E] [1] [5] for 5 units.
+Running task = [D] [8] [10] for 10 units.
+Running task = [B] [5] [15] for 15 units.
+Running task = [C] [5] [20] for 20 units.
+Running task = [A] [5] [25] for 25 units.
+
+Gantt chart:
+|  E   |  D   |  B   |  C   |  A   |
+0      5      15     30     50     75
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ A           5     25        0     50      75          75       50        50
+ B           5     15        0     15      30          30       15        15
+ C           5     20        0     30      50          50       30        30
+ D           8     10        0      5      15          15        5         5
+ E           1      5        0      0       5           5        0         0
+
+ Average turnaround time: 35.00
+ Average waiting time:    20.00
+ Average response time:   20.00
+ Total time: 75, CPU busy: 75, utilization: 100.0%
+ Throughput: 6.67 tasks per 100 time units, context switches: 4

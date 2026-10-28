@@ -1,0 +1,2 @@
+# boundary: a single task, minimum priority, first arrival > 0
+Only, 1, 7, 3
