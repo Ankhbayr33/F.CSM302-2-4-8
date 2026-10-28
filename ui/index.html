@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CPU Scheduling — Gantt Chart</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="viz-root">
+
+<header class="topbar">
+  <div>
+    <h1>CPU Scheduling Algorithms</h1>
+    <p class="sub">OSC 10th ed., Бүлэг 5 Programming Project — FCFS · SJF · Priority · RR · Priority-RR</p>
+  </div>
+  <div id="backend" class="badge badge-wait" role="status">Backend шалгаж байна…</div>
+</header>
+
+<main class="layout">
+
+  <!-- ============ Тохиргоо ============ -->
+  <section class="panel config" aria-labelledby="cfg-h">
+    <h2 id="cfg-h">Тохиргоо</h2>
+
+    <label class="field">
+      <span>Алгоритм</span>
+      <select id="algorithm">
+        <option value="fcfs">FCFS — First-Come, First-Served</option>
+        <option value="sjf">SJF — Shortest-Job-First</option>
+        <option value="priority">Priority</option>
+        <option value="rr">RR — Round-Robin</option>
+        <option value="priority_rr">Priority + Round-Robin</option>
+      </select>
+    </label>
+
+    <label class="field" id="quantum-field">
+      <span>Time quantum (q)</span>
+      <input id="quantum" type="number" min="1" max="1000000" value="10">
+    </label>
+
+    <div class="field">
+      <span>Task-ууд <small>(schedule.txt формат: <code>нэр, priority, burst[, arrival]</code>)</small></span>
+      <textarea id="tasks" rows="10" spellcheck="false" aria-describedby="tasks-help"></textarea>
+      <small id="tasks-help" class="muted">Priority 1–10 (их тоо = өндөр). Arrival заавал биш (анхдагч 0). <code>#</code>-ээр эхэлсэн мөр тайлбар.</small>
+    </div>
+
+    <div class="field">
+      <span>Бэлэн жишээ</span>
+      <select id="preset"></select>
+    </div>
+
+    <details class="random">
+      <summary>Санамсаргүй task үүсгэх</summary>
+      <div class="row">
+        <label>Тоо <input id="rand-n" type="number" min="1" max="50" value="6"></label>
+        <label>Max burst <input id="rand-burst" type="number" min="1" max="1000" value="30"></label>
+        <label>Max arrival <input id="rand-arr" type="number" min="0" max="1000" value="0"></label>
+      </div>
+      <button type="button" id="btn-random" class="btn">Үүсгэх</button>
+    </details>
+
+    <div class="btn-row">
+      <button type="button" id="btn-run" class="btn primary">▶ Ажиллуулах</button>
+      <button type="button" id="btn-compare" class="btn">Бүх алгоритмыг харьцуулах</button>
+    </div>
+    <div class="btn-row">
+      <button type="button" id="btn-reset" class="btn ghost">Reset</button>
+      <button type="button" id="btn-download" class="btn ghost">schedule.txt татах</button>
+      <label class="btn ghost file-btn">.txt ачаалах<input id="file-tasks" type="file" accept=".txt,text/plain" hidden></label>
+      <label class="btn ghost file-btn" title="CLI-ийн -j гаралтыг (./rr -j -q 10 schedule.txt > result.json) ачаалах">JSON үр дүн ачаалах<input id="file-json" type="file" accept=".json,application/json" hidden></label>
+    </div>
+
+    <div id="message" class="message" role="alert" hidden></div>
+  </section>
+
+  <!-- ============ Үр дүн ============ -->
+  <section class="results">
+
+    <div class="panel" aria-labelledby="gantt-h">
+      <div class="panel-head">
+        <h2 id="gantt-h">Gantt chart <span id="gantt-title" class="muted"></span></h2>
+        <code id="command" class="cmd" title="Ижил үр дүнг терминалд гаргах команд"></code>
+      </div>
+
+      <div class="player" id="player">
+        <button type="button" class="btn icon" id="btn-start" title="Эхлэл (Home)" aria-label="Эхлэл">⏮</button>
+        <button type="button" class="btn icon" id="btn-prev" title="Өмнөх үйл явдал (←)" aria-label="Өмнөх">◀</button>
+        <button type="button" class="btn icon primary" id="btn-play" title="Тоглуулах / зогсоох (Space)" aria-label="Тоглуулах">▶</button>
+        <button type="button" class="btn icon" id="btn-next" title="Дараагийн үйл явдал (→)" aria-label="Дараагийн">▶|</button>
+        <button type="button" class="btn icon" id="btn-end" title="Төгсгөл (End)" aria-label="Төгсгөл">⏭</button>
+        <input type="range" id="time" min="0" max="0" value="0" step="1" aria-label="Хугацаа">
+        <span class="time-label">t = <b id="time-now">0</b> / <span id="time-total">0</span></span>
+        <label class="speed">Хурд
+          <select id="speed">
+            <option value="5">5 / сек</option>
+            <option value="10" selected>10 / сек</option>
+            <option value="25">25 / сек</option>
+            <option value="60">60 / сек</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="gantt" class="gantt-wrap" aria-label="Gantt chart"></div>
+      <div id="legend" class="legend"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel" aria-labelledby="state-h">
+        <h2 id="state-h">Төлөв <span class="muted">t = <span id="state-t">0</span></span></h2>
+        <dl class="state" id="state"></dl>
+      </div>
+      <div class="panel" aria-labelledby="sum-h">
+        <h2 id="sum-h">Дундаж үзүүлэлт</h2>
+        <div class="tiles" id="summary"></div>
+      </div>
+    </div>
+
+    <div class="panel" aria-labelledby="tbl-h">
+      <h2 id="tbl-h">Task бүрийн үр дүн</h2>
+      <div class="table-wrap">
+        <table id="metrics">
+          <thead><tr>
+            <th>Task</th><th>Priority</th><th>Burst</th><th>Arrival</th>
+            <th>Start</th><th>Finish</th><th>Turnaround</th><th>Waiting</th><th>Response</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="muted small">Turnaround = Finish − Arrival · Waiting = Turnaround − Burst · Response = Start − Arrival</p>
+    </div>
+
+    <div class="panel" id="compare-panel" hidden aria-labelledby="cmp-h">
+      <h2 id="cmp-h">Алгоритмуудын харьцуулалт <span class="muted" id="cmp-sub"></span></h2>
+      <div id="compare-charts" class="compare-charts"></div>
+      <div id="compare-gantts" class="compare-gantts gantt-wrap"></div>
+      <div class="table-wrap"><table id="compare-table"></table></div>
+    </div>
+
+  </section>
+</main>
+
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+</div>
+
+<script src="presets.js"></script>
+<script src="api.js"></script>
+<script src="gantt.js"></script>
+<script src="compare.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
