@@ -1,0 +1,11 @@
+# build output
+build/
+fcfs
+sjf
+priority
+rr
+priority_rr
+*.exe
+*.o
+__pycache__/
+result.json
