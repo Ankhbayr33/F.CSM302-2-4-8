@@ -76,7 +76,7 @@ Task *i*-ийн хувьд turnaround time нь TATᵢ = Finishᵢ − Arrival�
 
 Оролт нь schedule файлаас эсвэл UI-аас ирнэ. `driver.c` нь мөр бүрийг шалгаад `add()`-аар тухайн алгоритмын list-д оруулна. `schedule()` нь давталтаар `pickNextTask()` → `run()` гүйцэтгэнэ. `cpu.c` нь `run()` бүрийн хугацааг timeline-д бүртгэнэ. `stats.c` нь timeline болон task-уудаас метрикийг тооцож, текстээр эсвэл `-j` сонголттой үед JSON хэлбэрээр хэвлэнэ. UI сервер нь C програмыг subprocess-оор ажиллуулж, JSON-ийг browser руу дамжуулна. UI-д тусдаа scheduling алгоритм байхгүй.
 
-![Системийн зохиомж](docs/images/architecture.png)
+![Системийн зохиомж](images/architecture.png)
 
 *Зураг 1. Компонентууд ба өгөгдлийн урсгал*
 
