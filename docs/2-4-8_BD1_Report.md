@@ -78,7 +78,8 @@ Task *i*-ийн хувьд turnaround time нь TATᵢ = Finishᵢ − Arrival�
 
 Оролт нь schedule файлаас эсвэл UI-аас ирнэ. `driver.c` нь мөр бүрийг шалгаад `add()`-аар тухайн алгоритмын list-д оруулна. `schedule()` нь давталтаар `pickNextTask()` → `run()` гүйцэтгэнэ. `cpu.c` нь `run()` бүрийн хугацааг timeline-д бүртгэнэ. `stats.c` нь timeline болон task-уудаас метрикийг тооцож, текстээр эсвэл `-j` сонголттой үед JSON хэлбэрээр хэвлэнэ. UI сервер нь C програмыг subprocess-оор ажиллуулж, JSON-ийг browser руу дамжуулна. UI-д тусдаа scheduling алгоритм байхгүй.
 
-![Системийн зохиомж](docs/images/architecture.png)
+![Системийн зохиомж](<img width="491" height="605" alt="image" src="https://github.com/user-attachments/assets/748a0338-075f-4680-b6b3-a365c1caeb5c" />
+)
 
 *Зураг 1. Компонентууд ба өгөгдлийн урсгал*
 
@@ -162,11 +163,13 @@ make ui
 
 `T1, 4, 20 · T2, 2, 25 · T3, 3, 25 · T4, 3, 15 · T5, 10, 10` (бүгд 0-д ирнэ). FCFS-д дуусах хугацаа 20, 45, 70, 85, 95 тул дундаж TAT = (20 + 45 + 70 + 85 + 95) / 5 = 63, дундаж WT = (0 + 20 + 45 + 70 + 85) / 5 = 44. Програмын гаралт гар тооцоотой таарав.
 
-![FCFS](docs/screenshots/r1_book_fcfs.png)
+![FCFS](<img width="822" height="372" alt="image" src="https://github.com/user-attachments/assets/06f98bca-dbdf-45e5-966f-188ee67d84d5" />
+)
 
 *Зураг 2. Номын жишээ, FCFS — бодит UI төлөв*
 
-![RR](docs/screenshots/r2_book_rr.png)
+![RR](<img width="822" height="372" alt="image" src="https://github.com/user-attachments/assets/6876d9e9-acd2-4127-be1a-cbb19e51a143" />
+)
 
 *Зураг 3. Номын жишээ, RR (q = 10). T1, T2, T3, T4 хэд хэдэн slice-д хуваагдсан*
 
@@ -182,11 +185,13 @@ make ui
 
 `arrival.txt`: P1 (3, 8, 0), P2 (5, 4, 1), P3 (1, 9, 2), P4 (5, 5, 3), P5 (9, 2, 40). RR, q = 4. t = 13 агшинд P4 ажиллаж, P1 ба P3 ready queue-д хүлээж, P2 дууссан, P5 ирээгүй байна. P5 40-д ирэх тул CPU [26:40] хооронд idle байж, utilization 28 / 42 = 66.7% болов. Avg TAT 15.0, WT 9.4, RT 3.6, context switch 8.
 
-![RR t=13](docs/screenshots/r3_arrival_rr_t13.png)
+![RR t=13](<img width="822" height="372" alt="image" src="https://github.com/user-attachments/assets/cee3ca5a-54fd-4262-a8c1-05aaccd92db7" />
+)
 
 *Зураг 4. RR (q = 4), t = 13 агшинд зогсоосон бодит UI төлөв*
 
-![State](docs/screenshots/r4_state_t13.png)
+![State](<img width="822" height="243" alt="image" src="https://github.com/user-attachments/assets/9bb2c507-0456-4f52-995f-159820f95827" />
+)
 
 *Зураг 5. t = 13 агшин дахь task-уудын төлөв ба дундаж үзүүлэлт*
 
@@ -194,7 +199,8 @@ make ui
 
 `convoy.txt`: 50 нэгжийн `Long` task эхэнд, 3 нэгжийн дөрвөн task араас нь, бүгд 0-д ирнэ. FCFS-д богино task-ууд бүгд 50-аас хойш эхэлж, дундаж WT 43.6 болов. SJF-д тэд эхэлж ажиллаад дундаж WT 6.0 боллоо. RR (q = 10)-ийн дундаж WT 14.0, RT 11.6. Priority-ийн үр дүн FCFS-тэй ижил гарсан, учир нь бүх task ижил priority-тэй тул FCFS дүрэм ажилласан.
 
-![Compare](docs/screenshots/r5_convoy_compare.png)
+![Compare](<img width="822" height="613" alt="image" src="https://github.com/user-attachments/assets/ea1004b6-daa3-4838-bc7f-56f330eab76f" />
+)
 
 *Зураг 6. Convoy жишээн дээрх таван алгоритмын харьцуулалт*
 
@@ -218,7 +224,8 @@ q ≥ 25 (хамгийн урт burst) үед RR-ийн үр дүн FCFS-тэй 
 
 `T2, 11, 25` мөр бүхий оролтыг өгөхөд програм scheduling эхлүүлэлгүйгээр `line 2: priority '11' must be an integer from 1 to 10` мессеж гаргаж, 1 кодоор гарав. UI нь энэ мессежийг хэрэглэгчид харуулж, өмнөх chart-ыг арилгана.
 
-![Error](docs/screenshots/r6_error.png)
+![Error](<img width="413" height="466" alt="image" src="https://github.com/user-attachments/assets/3777dd1e-ec1f-4e30-93e1-20823633eca9" />
+)
 
 *Зураг 7. Буруу priority-тэй оролтын бодит алдааны мэдээлэл*
 
