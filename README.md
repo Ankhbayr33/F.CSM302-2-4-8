@@ -5,7 +5,7 @@
 
 Хуваарилалтын код: **II-4-8** · Гишүүд: Д.Хосбаяр (B241940003), Н.Төрболд (B241940141), М.Алтан-Од (B222270023), Д.Анхбаяр (B242270072)
 
-**Эцсийн материал:** [Final Report](docs/II-4-8_Final_Report.md) · [Manual](docs/MANUAL.md) · [Poster (PDF)](docs/II-4-8_Poster.pdf) · [Шүүмжийн хариу](docs/REVIEW_RESPONSE.md) · [BD1 тайлан](docs/2-4-8_BD1_Report.md)
+**Эцсийн материал:** [Poster (PDF)](docs/II-4-8_Poster.pdf) · Final Report ([PDF](docs/II-4-8_Final_Report.pdf), [md](docs/II-4-8_Final_Report.md)) · Manual ([PDF](docs/II-4-8_Manual.pdf), [md](docs/MANUAL.md)) · [Шүүмжийн хариу](docs/REVIEW_RESPONSE.md) · [BD1 тайлан](docs/2-4-8_BD1_Report.md)
 
 ![UI](docs/screenshots/final_overview.png)
 
@@ -147,9 +147,8 @@ Makefile нь `driver.c`, `list.c`, `cpu.c`, `task.c`, `stats.c`, `utf8.c`-г н
 
 IV-2-15 багийн шүүмжид (2026-11-08) илэрсэн 5 Minor асуудлыг бүгдийг зассан: UTF-8 BOM (A1), кирилл нэр (A2), харьцуулалтад нэг алгоритмын алдаа бусдыг нуух (A3), идэвхгүй quantum талбарын хуучин утга (A4), README-ийн мөрийн төгсгөлийн тайлбар (A5). Дэлгэрэнгүй, нотолгоо: [docs/REVIEW_RESPONSE.md](docs/REVIEW_RESPONSE.md).
 
-## Ашигласан материал, AI
+## Ашигласан материал
 
 - Silberschatz, Galvin, Gagne, *Operating System Concepts*, 10th ed., Wiley 2018 — Бүлэг 5.3, Programming Projects P-29–P-31
 - Кодын бүтэц нь номын эх кодын (driver/list/cpu/schedulers) зохион байгуулалтыг дагасан; кодыг шинээр бичсэн
-.
 
