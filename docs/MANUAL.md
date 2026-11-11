@@ -1,4 +1,4 @@
-# БИЕ ДААЛТ 1 — ГАРЫН АВЛАГА
+# БИЕ ДААЛТ 2 — ГАРЫН АВЛАГА (эцсийн хувилбар v1.0.0)
 
 **ШИНЖЛЭХ УХААН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ**
 
@@ -15,7 +15,8 @@
 | **Сэдэв** | CPU Scheduling |
 | **Programming project** | Scheduling Algorithms |
 | **UI дүрслэл** | Gantt chart |
-| **Хуваарилалтын код** | 2-4-8 |
+| **Хуваарилалтын код** | II-4-8 |
+| **Хувилбар** | v1.0.0 (GitHub release) |
 | **Хичээл заасан багш** | Г.Ганбат /F.CS10/ |
 | **Бие даалтын ажлыг гүйцэтгэсэн** | B241940003 (Д.Хосбаяр), B241940141 (Н.Төрболд), B222270023 (М.Алтан-Од), B242270072 (Д.Анхбаяр) |
 
@@ -58,13 +59,13 @@ CPU Scheduling Simulator нь task-уудын жагсаалтыг сурах б
 | Үйлдлийн систем | Linux, macOS, эсвэл Windows 10/11 + WSL (Ubuntu) |
 | Compiler | GCC эсвэл Clang (C11), GNU Make |
 | Runtime | Python 3.8 ба түүнээс дээш (зөвхөн UI ба тестэд) |
-| Browser | Chrome, Edge, Firefox, Safari-ийн сүүлийн хувилбар |
+| Browser | Chrome, Edge, Brave болон бусад Chromium суурьтай browser; Firefox, Safari-ийн сүүлийн хувилбар |
 
 Гуравдагч талын сан суулгах шаардлагагүй. Windows дээр C програмыг WSL дотор build хийж ажиллуулна. Browser-ийг Windows дээрээ нээнэ.
 
 ### 1.3. Суулгах эсвэл нээх алхам
 
-1. Төслийг татна: `git clone https://github.com/Ankhbayr33/F.CSM302-2-4-8.git`, дараа нь `cd F.CSM302-2-4-8`. Zip файлаар авсан бол задлаад тэр хавтас руу орно.
+1. Төслийг татна: `git clone --branch v1.0.0 https://github.com/Ankhbayr33/F.CSM302-2-4-8.git`, дараа нь `cd F.CSM302-2-4-8`. `--branch v1.0.0` нь энэ гарын авлагатай яг ижил release хувилбарыг татна. Zip файлаар авсан бол задлаад тэр хавтас руу орно.
 2. Програмуудыг build хийнэ: `make`. Хавтаст `fcfs`, `sjf`, `priority`, `rr`, `priority_rr` гэсэн 5 програм үүснэ.
 3. UI-г асаана: `make ui`. Терминалд `Scheduler UI running at http://localhost:8000` гэж гарна.
 4. Browser-т `localhost:8000` хаягийг нээнэ. Баруун дээд буланд **“C backend холбогдсон”** гэж гарвал бэлэн.
@@ -94,13 +95,13 @@ Task-ын мөрийн утгууд:
 
 | Талбар | Утга | Жишээ |
 |---|---|---|
-| нэр | Үсэг, тоо, `_ - .`, 31 тэмдэгт хүртэл, давхардахгүй | `T1`, `P_2` |
+| нэр | Латин эсвэл кирилл үсэг (Ө, Ү орно), тоо, `_ - .`; 31 тэмдэгт хүртэл; давхардахгүй. Хоосон зай, бусад бичгийн үсэг (хятад г.м.), emoji зөвшөөрөгдөхгүй | `T1`, `P_2`, `Процесс1` |
 | priority | 1–10, их тоо нь өндөр priority | `4` |
 | burst | CPU-д ажиллах хугацаа, 1–1 000 000 | `20` |
 | arrival | Ирэх хугацаа, 0–1 000 000. Заавал биш, анхдагч 0 | `5` |
 | time quantum | RR-ийн нэг slice, 1–1 000 000, анхдагч 10 | `4` |
 
-`#`-ээр эхэлсэн мөр тайлбар, хоосон мөрийг алгасна. Task-уудыг гараар бичихээс гадна **“Санамсаргүй task үүсгэх”** хэсгээр (1–50 task, max burst, max arrival) үүсгэх, **“.txt ачаалах”** товчоор файлаас уншуулах, **“schedule.txt татах”** товчоор хадгалах боломжтой.
+`#`-ээс хойшхи бүх зүйл тайлбар: бүтэн мөр (`# тайлбар`) эсвэл мөрийн төгсгөлд (`T2, 2, 25, 5  # тайлбар`) бичиж болно. Хоосон мөрийг алгасна. Файлын эхэнд UTF-8 BOM (Windows Notepad-ийн “UTF-8 with BOM”) байвал автоматаар алгасна. Мөрийн төгсгөл LF болон CRLF аль аль нь болно. Task-уудыг гараар бичихээс гадна **“Санамсаргүй task үүсгэх”** хэсгээр (1–50 task, max burst, max arrival) үүсгэх, **“.txt ачаалах”** товчоор файлаас уншуулах, **“schedule.txt татах”** товчоор хадгалах боломжтой.
 
 ### 1.5. Ажиллуулах, зогсоох, reset хийх
 
@@ -183,8 +184,9 @@ Running task = [T2] [2] [25] for 10 units.
 | `CPU burst '0' must be a positive integer` | Burst 0 эсвэл сөрөг | Burst ≥ 1 |
 | `expected 'name, priority, burst[, arrival]'` | Талбар дутуу эсвэл илүү | 3 эсвэл 4 талбартай болгоно |
 | `duplicate task name 'T1'` | Нэр давхардсан | Өөр нэр өгнө |
-| `invalid task name 'T 1'` | Нэрэнд хоосон зай, тусгай тэмдэгт байна | Үсэг, тоо, `_ - .` ашиглана |
-| `Time quantum нь 1-ээс 1000000 хүртэлх бүхэл тоо байх ёстой` | Quantum буруу | Эерэг бүхэл тоо оруулна |
+| `invalid task name 'T 1' (use Latin or Cyrillic letters, digits, _ - ., at most 31 characters)` | Нэрэнд хоосон зай, тусгай тэмдэгт, латин/кириллээс өөр үсэг байна, эсвэл 31 тэмдэгтээс урт | Латин/кирилл үсэг, тоо, `_ - .` ашиглана |
+| `Time quantum нь 1-ээс 1000000 хүртэлх бүхэл тоо байх ёстой` | RR, Priority-RR эсвэл харьцуулалтад quantum буруу. FCFS, SJF, Priority quantum-ыг шалгахгүй; RR-ээс тэдгээр рүү шилжихэд буруу утга 10 болж сэргэнэ | Эерэг бүхэл тоо оруулна |
+| “N алгоритм ажиллаагүй тул харьцуулалтаас хасав: • RR: …” | Харьцуулалтад зарим алгоритм ажиллаж чадаагүй (жишээ нь q = 1 үед slice хэт олон) | Бусад алгоритмын үр дүн харагдана; хүснэгтэд ✖ мөрөнд шалтгаан бичигдэнэ. Quantum-ыг ихэсгэвэл бүгд гарна |
 | `quantum too small: about … time slices` | Slice 200 000-аас олон болох гэж байна | Quantum-ыг ихэсгэнэ |
 | `cannot listen on port 8000` | Порт өөр програмд ашиглагдаж байна | `python3 ui/server.py --port 8001` |
 | `make: command not found` | Build хэрэгсэл суугаагүй | `sudo apt install -y build-essential python3` |
@@ -200,8 +202,9 @@ Running task = [T2] [2] [25] for 10 units.
 ### 2.1. Repository clone хийх
 
 ```
-git clone https://github.com/Ankhbayr33/F.CSM302-2-4-8.git
+git clone --branch v1.0.0 https://github.com/Ankhbayr33/F.CSM302-2-4-8.git
 cd F.CSM302-2-4-8
+git describe --tags        # v1.0.0
 ```
 
 Repository-ийн бүтэц: `src/` (C эх код), `ui/` (вэб UI ба сервер), `tests/` (тестийн өгөгдөл, скрипт), `docs/` (гарын авлага, зураг), `Makefile`, `schedule.txt` (номын жишээ), `README.md`, `Report.md`.
@@ -213,9 +216,10 @@ Repository-ийн бүтэц: `src/` (C эх код), `ui/` (вэб UI ба се
 | OS | Ubuntu 24.04 LTS (x86-64); Windows + WSL Ubuntu |
 | C compiler | GCC 13.3.0, Clang 18.1.3 |
 | Compiler тохиргоо | `-std=c11 -Wall -Wextra -pedantic -O2` (анхааруулгагүй) |
-| Make | GNU Make |
-| Python | 3.13 (3.8+ хангалттай) |
-| Browser | Chromium (Playwright-аар автомат шалгасан) |
+| Make | GNU Make 4.3 |
+| Python | 3.13 ба 3.12.3 (3.8+ хангалттай) |
+| Browser | Chromium (Playwright-аар автомат шалгасан); Brave (IV-2-15 баг гараар туршсан) |
+| UI тест (заавал биш) | Node.js 18+, Playwright (`npm install playwright`, `npx playwright install chromium`) |
 
 ### 2.3. Dependency суулгах
 
@@ -238,7 +242,7 @@ Python-ий нэмэлт сан (pip) шаардлагагүй. Зөвхөн sta
 | `./sjf -j schedule.txt` | JSON гаралт |
 | `make ui` | Build + UI сервер (http://localhost:8000) |
 | `python3 ui/server.py --port 8001 --no-browser` | Өөр порт, browser автоматаар нээхгүй |
-| `make test` | Бүх автомат тест |
+| `make test` | Бүх автомат тест (91; Playwright байхгүй бол 90 + UI SKIP) |
 | `make clean` | Build-ийн гаралтыг устгана |
 
 ### 2.5. Үндсэн тестийн өгөгдөл
@@ -252,12 +256,14 @@ Python-ий нэмэлт сан (pip) шаардлагагүй. Зөвхөн sta
 | `tests/data/same_priority.txt` | Ижил priority-тэй 3 task (Priority-RR) |
 | `tests/data/single.txt` | Ганц task, priority 1, arrival 3 |
 | `tests/data/whitespace.txt` | Таслалгүй формат, тайлбар мөр |
+| `tests/data/bom_comments.txt` | Эхэндээ UTF-8 BOM-тэй, мөрийн төгсгөлийн `#` тайлбартай (шүүмж A1, A5) |
+| `tests/data/cyrillic.txt` | Кирилл нэртэй task-ууд: `Процесс1`, `Өгөгдөл_2`, `Үйлдэл-3` (шүүмж A2) |
 
-Хүлээгдсэн гаралт нь `tests/expected/<алгоритм>_<файл>_q<quantum>.txt` файлуудад байна (49 файл).
+Хүлээгдсэн гаралт нь `tests/expected/<алгоритм>_<файл>_q<quantum>.txt` файлуудад байна (63 файл).
 
 ### 2.6. Нэмэлт boundary/error test
 
-`tests/errors/` хавтаст 13 алдаатай оролт байна. Тэдгээр нь priority 0 ба 11, burst 0, −5, 2 000 000, arrival −1, дутуу ба илүү талбар, давхардсан нэр, хоосон файл, нэрэнд хоосон зай, тоо биш утга, хэт олон RR slice юм. Програм бүрд нь 1 кодоор гарч, мөрийн дугаартай мессеж өгөх ёстой.
+`tests/errors/` хавтаст 16 алдаатай оролт байна. Тэдгээр нь priority 0 ба 11, burst 0, −5, 2 000 000, arrival −1, дутуу ба илүү талбар, давхардсан нэр, хоосон файл, нэрэнд хоосон зай, тоо биш утга, хэт олон RR slice, 32 тэмдэгттэй кирилл нэр, буруу UTF-8 байт, хятад үсэгтэй нэр юм. Програм бүрд нь 1 кодоор гарч, мөрийн дугаартай мессеж өгөх ёстой.
 
 Командын мөрийн 10 тест нь `-q 0`, `-q abc`, утгагүй `-q`, мэдэгдэхгүй сонголт `-x`, файлгүй, байхгүй файл, хоёр файл, `-h`, FCFS-д `-q` өгөхөд гарах анхааруулга, JSON гаралтын зөв эсэхийг шалгана.
 
@@ -267,6 +273,8 @@ Python-ий нэмэлт сан (pip) шаардлагагүй. Зөвхөн sta
 python3 tests/reference_check.py --cases 1000 --seed 7
 ```
 
+`tests/ui_test.js` нь UI-г headless Chromium-оор ажиллуулж шалгана: RR-ийн буруу quantum FCFS-ийг хориглохгүй (A4), харьцуулалтад нэг алгоритм алдаа өгөхөд бусад нь харагдана (A3), кирилл нэр UI-д зөв гарна (A2), мөн хэвийн харьцуулалт ба буруу оролтын регресс. Node.js ба Playwright (`npm install playwright`, `npx playwright install chromium`) шаардлагатай. Байхгүй бол `make test` энэ хэсгийг SKIP хийнэ.
+
 ### 2.7. Хүлээгдсэн үр дүн
 
 `make test` командын төгсгөлд:
@@ -274,8 +282,12 @@ python3 tests/reference_check.py --cases 1000 --seed 7
 ```
 reference check: 1500/1500 runs match (300 random task sets x 5 algorithms)
   PASS  C schedulers match tests/reference_check.py
+5. UI test (tests/ui_test.js)
+  ...
+UI test: all passed
+  PASS  UI behaves as expected (A2, A3, A4 and regressions)
 
-Passed: 73   Failed: 0
+Passed: 91   Failed: 0
 ```
 
 Номын жишээний (`schedule.txt`, q = 10) дундаж үр дүн:
@@ -304,6 +316,8 @@ $ echo $?
 - `__sync_fetch_and_add` нь зөвхөн GCC, Clang-д ажилладаг. MSVC дээр энгийн increment ашиглана.
 - UI сервер зөвхөн `127.0.0.1`-д сонсдог тул өөр компьютерээс хандах боломжгүй.
 - 1000-аас олон task, 1 000 000-аас их утга оруулах боломжгүй.
+- Task-ын нэрэнд зөвхөн латин ба кирилл үсэг зөвшөөрнө. Терминалын хүснэгтэд 8 тэмдэгтээс урт нэр тухайн мөрийн баганыг баруун тийш шилжүүлнэ (UI-д нөлөөгүй).
+- `make ui` browser-ийг автоматаар нээх үед зарим browser (жишээ нь Brave) терминалд өөрийн `zygote … Broken pipe` гэх мэт мөр хэвлэж болно. Энэ нь browser процессын мессеж бөгөөд серверт нөлөөлөхгүй. Ийм мөр гаргахгүй байх бол `python3 ui/server.py --no-browser` ажиллуулаад хаягийг гараар нээнэ.
 - WSL дотор `make ui` ажиллуулахад browser автоматаар нээгдэхгүй байж болно. Тэр үед Windows-ийн browser-т `localhost:8000` хаягийг гараар нээнэ.
 - Windows-ийн `cmd`, PowerShell дээр шууд build хийгдэхгүй. WSL эсвэл MSYS2 ашиглана.
 

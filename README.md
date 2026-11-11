@@ -1,9 +1,13 @@
 # CPU Scheduling Algorithms — Gantt Chart Simulator
 
-**F.CSM302 Үйлдлийн систем · Бие даалт 1**
+**F.CSM302 Үйлдлийн систем · Бие даалт 2 (эцсийн хувилбар v1.0.0)**
 Сурах бичиг: Silberschatz, Galvin, Gagne, *Operating System Concepts*, 10th ed., Бүлэг 5, Programming Project “Scheduling Algorithms” (P-29 – P-31)
 
-Хуваарилалтын код: `____` · Гишүүд: `____`
+Хуваарилалтын код: **II-4-8** · Гишүүд: Д.Хосбаяр (B241940003), Н.Төрболд (B241940141), М.Алтан-Од (B222270023), Д.Анхбаяр (B242270072)
+
+**Эцсийн материал:** [Final Report](docs/II-4-8_Final_Report.md) · [Manual](docs/MANUAL.md) · [Poster (PDF)](docs/II-4-8_Poster.pdf) · [Шүүмжийн хариу](docs/REVIEW_RESPONSE.md) · [BD1 тайлан](docs/2-4-8_BD1_Report.md)
+
+![UI](docs/screenshots/final_overview.png)
 
 ## Зорилго
 
@@ -22,14 +26,21 @@
 ## Quick Start
 
 ```sh
-git clone <repo-url> cpu-scheduling && cd cpu-scheduling
+git clone --branch v1.0.0 https://github.com/Ankhbayr33/F.CSM302-2-4-8.git && cd F.CSM302-2-4-8
 make                      # 5 executable build хийнэ
 ./rr schedule.txt         # номын жишээ, quantum 10
-make test                 # бүх тест (73 шалгалт)
+make test                 # бүх тест (91 шалгалт)
 make ui                   # Gantt chart UI → http://localhost:8000
 ```
 
-Шаардлага: GCC эсвэл Clang (C11), `make`, Python 3.8+ (зөвхөн UI ба тестэд, нэмэлт сан хэрэггүй). Linux, macOS, Windows дээр WSL эсвэл MSYS2 ашиглана.
+Шаардлага: GCC эсвэл Clang (C11), `make`, Python 3.8+ (зөвхөн UI ба тестэд, нэмэлт сан хэрэггүй). Linux, macOS, Windows дээр WSL эсвэл MSYS2 ашиглана. UI тест нь заавал биш: Node.js 18+ ба Playwright шаардлагатай, байхгүй бол алгасагдана.
+
+| Туршсан орчин | Хувилбар |
+|---|---|
+| OS | Ubuntu 24.04 LTS (x86-64), Windows + WSL Ubuntu |
+| Compiler | GCC 13.3.0, Clang 18.1.3 (`-std=c11 -Wall -Wextra -pedantic`, анхааруулгагүй) |
+| Python | 3.13, 3.12.3 |
+| Browser | Chromium (Playwright), Brave, Chrome, Edge |
 
 ## Ашиглах
 
@@ -48,7 +59,7 @@ T1, 4, 20
 T2, 2, 25, 5      # 4 дэх талбар (arrival) заавал биш, анхдагч 0
 ```
 
-Priority 1–10, burst ≥ 1, arrival ≥ 0. Буруу оролтод програм мөрийн дугаартай алдааны мэдээлэл хэвлээд 1 кодоор гарна.
+Priority 1–10, burst ≥ 1, arrival ≥ 0. Нэр нь латин эсвэл кирилл үсэг (`Процесс1` болно), тоо, `_ - .`, 31 тэмдэгт хүртэл. `#`-ээс хойшхи бүх зүйл тайлбар: бүтэн мөр эсвэл мөрийн төгсгөлд бичиж болно. Файлын эхэнд UTF-8 BOM байвал алгасна. Буруу оролтод програм мөрийн дугаартай алдааны мэдээлэл хэвлээд 1 кодоор гарна.
 
 **Гаралт:** номын `Running task = [T1] [4] [20] for 10 units.` мөрүүд, текст Gantt chart, task бүрийн хүснэгт ба дундаж үзүүлэлтүүд.
 
@@ -69,7 +80,13 @@ Gantt chart:
 - Бэлэн жишээнүүд, санамсаргүй task үүсгэгч, `.txt` ачаалах/татах
 - Backend асаагүй үед CLI-ийн `-j` гаралтыг (`./rr -j schedule.txt > result.json`) "JSON үр дүн ачаалах" товчоор нээж болно
 
-![Gantt chart](docs/screenshots/gantt_rr.png)
+![Gantt chart](docs/screenshots/final_book_rr.png)
+
+*Номын жишээ, RR (q = 10): CPU мөр ба task бүрийн мөр*
+
+![Харьцуулалт](docs/screenshots/final_convoy_compare.png)
+
+*Convoy жишээ дээрх 5 алгоритмын харьцуулалт*
 
 ## Бүтэц
 
@@ -86,18 +103,19 @@ src/
   schedule_rr.c          Round-robin
   schedule_priority_rr.c Priority + round-robin (priority бүрт queue)
   stats.h / stats.c      метрик, текст Gantt, JSON гаралт
+  utf8.h / utf8.c        UTF-8 (кирилл нэр, BOM) туслах функцууд
 ui/
   server.py              UI ↔ C executable гүүр (stdlib)
   index.html, style.css
   api.js  presets.js  gantt.js  compare.js  app.js
 tests/
   data/      үндсэн тестийн өгөгдөл      errors/   алдаатай оролт
-  expected/  хүлээгдсэн гаралт           run_tests.sh, reference_check.py
-docs/        MANUAL.md, screenshots/
+  expected/  хүлээгдсэн гаралт           run_tests.sh, reference_check.py, ui_test.js
+docs/        MANUAL.md, 2-4-8_BD1_Report.md, REVIEW_RESPONSE.md, images/, screenshots/
 schedule.txt номын жишээ
 ```
 
-Makefile нь `driver.c`, `list.c`, `cpu.c`, `task.c`, `stats.c`-г нэг `schedule_*.c`-тэй холбож алгоритм бүрт тусдаа executable гаргана. Энэ нь номын эх кодын бүтэцтэй адил (`make fcfs`, `./fcfs schedule.txt`).
+Makefile нь `driver.c`, `list.c`, `cpu.c`, `task.c`, `stats.c`, `utf8.c`-г нэг `schedule_*.c`-тэй холбож алгоритм бүрт тусдаа executable гаргана. Энэ нь номын эх кодын бүтэцтэй адил (`make fcfs`, `./fcfs schedule.txt`).
 
 ## Шийдвэрүүд (номонд тодорхой заагаагүй)
 
@@ -109,12 +127,13 @@ Makefile нь `driver.c`, `list.c`, `cpu.c`, `task.c`, `stats.c`-г нэг `sche
 
 ## Тест
 
-`make test` нь дараах 4 хэсгийг шалгана:
+`make test` нь дараах 5 хэсгийг шалгана (нийт 91):
 
-1. **Golden** — 5 алгоритмыг `tests/data/`-ийн 7 файл дээр (RR-д q=10 ба q=4) ажиллуулж `tests/expected/`-тэй харьцуулна (49 тест)
-2. **Алдаа** — 13 буруу оролт (priority 11, burst 0, давхардсан нэр, хоосон файл …) зөв мессеж өгч, 1 кодоор гарах ёстой
+1. **Golden** — 5 алгоритмыг `tests/data/`-ийн 9 файл дээр (RR-д q=10 ба q=4) ажиллуулж `tests/expected/`-тэй харьцуулна (63 тест)
+2. **Алдаа** — 16 буруу оролт (priority 11, burst 0, давхардсан нэр, хоосон файл, буруу UTF-8 …) зөв мессеж өгч, 1 кодоор гарах ёстой
 3. **Сонголт** — `-q 0`, `-q abc`, файлгүй, мэдэгдэхгүй сонголт, JSON зөв эсэх
 4. **Reference** — `tests/reference_check.py` нь бие даасан Python хэрэгжүүлэлт. 300 санамсаргүй task set × 5 алгоритм дээр timeline болон бүх метрикийг C-ийн үр дүнтэй тулгана
+5. **UI** — `tests/ui_test.js` UI-г headless Chromium-оор шалгана (Node.js + Playwright шаардлагатай, байхгүй бол SKIP)
 
 Номын 5 task-тай жишээний дундаж үр дүн:
 
@@ -123,6 +142,10 @@ Makefile нь `driver.c`, `list.c`, `cpu.c`, `task.c`, `stats.c`-г нэг `sche
 | Дундаж turnaround | 63.0 | 49.0 | 52.0 | 76.0 | 54.0 |
 | Дундаж waiting | 44.0 | 30.0 | 33.0 | 57.0 | 35.0 |
 | Дундаж response | 44.0 | 30.0 | 33.0 | 20.0 | 30.0 |
+
+## Шүүмжийн дагуу хийсэн засвар
+
+IV-2-15 багийн шүүмжид (2026-11-08) илэрсэн 5 Minor асуудлыг бүгдийг зассан: UTF-8 BOM (A1), кирилл нэр (A2), харьцуулалтад нэг алгоритмын алдаа бусдыг нуух (A3), идэвхгүй quantum талбарын хуучин утга (A4), README-ийн мөрийн төгсгөлийн тайлбар (A5). Дэлгэрэнгүй, нотолгоо: [docs/REVIEW_RESPONSE.md](docs/REVIEW_RESPONSE.md).
 
 ## Ашигласан материал, AI
 
