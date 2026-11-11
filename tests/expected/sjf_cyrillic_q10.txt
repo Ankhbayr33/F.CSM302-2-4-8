@@ -1,0 +1,22 @@
+Algorithm: SJF, tasks: 4
+
+Running task = [Өгөгдөл_2] [2] [5] for 5 units.
+Running task = [Task.4] [5] [4] for 4 units.
+Running task = [Үйлдэл-3] [3] [8] for 8 units.
+Running task = [Процесс1] [4] [20] for 20 units.
+
+Gantt chart:
+| Өгөгдөл_2 | Task.4 | Үйлдэл-3 | Процесс1 |
+0           5        9          17         37
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ Процесс1    4     20        0     17      37          37       17        17
+ Өгөгдөл_2    2      5        0      0       5           5        0         0
+ Үйлдэл-3    3      8        2      9      17          15        7         7
+ Task.4      5      4        3      5       9           6        2         2
+
+ Average turnaround time: 15.75
+ Average waiting time:    6.50
+ Average response time:   6.50
+ Total time: 37, CPU busy: 37, utilization: 100.0%
+ Throughput: 10.81 tasks per 100 time units, context switches: 3

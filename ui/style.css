@@ -188,6 +188,8 @@ tr.done td { background: var(--surface-2); }
 tr.running td { font-weight: 700; }
 tfoot td { font-weight: 700; border-top: 1px solid var(--border); border-bottom: none; }
 td .best { color: var(--ok); font-weight: 700; }
+tr.failed td { color: var(--err); }
+tr.failed td[colspan] { text-align: left; white-space: normal; }
 
 /* compare */
 .compare-charts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }

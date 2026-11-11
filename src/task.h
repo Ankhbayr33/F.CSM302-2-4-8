@@ -8,11 +8,12 @@
 #ifndef TASK_H
 #define TASK_H
 
-#define MAX_NAME_LEN 31
+#define MAX_NAME_LEN   31                  /* characters (Latin or Cyrillic) */
+#define MAX_NAME_BYTES (MAX_NAME_LEN * 4)  /* UTF-8: up to 4 bytes per char  */
 #define MAX_TASKS    1000
 
 typedef struct task {
-    char name[MAX_NAME_LEN + 1];
+    char name[MAX_NAME_BYTES + 1];   /* UTF-8 */
     int  tid;         /* unique id, assigned atomically in input order    */
     int  priority;    /* MIN_PRIORITY..MAX_PRIORITY, higher = more urgent */
     int  burst;       /* total CPU burst                                   */

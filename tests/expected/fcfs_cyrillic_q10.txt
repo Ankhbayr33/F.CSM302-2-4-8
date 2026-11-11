@@ -1,0 +1,22 @@
+Algorithm: FCFS, tasks: 4
+
+Running task = [Процесс1] [4] [20] for 20 units.
+Running task = [Өгөгдөл_2] [2] [5] for 5 units.
+Running task = [Үйлдэл-3] [3] [8] for 8 units.
+Running task = [Task.4] [5] [4] for 4 units.
+
+Gantt chart:
+| Процесс1 | Өгөгдөл_2 | Үйлдэл-3 | Task.4 |
+0          20          25         33       37
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ Процесс1    4     20        0      0      20          20        0         0
+ Өгөгдөл_2    2      5        0     20      25          25       20        20
+ Үйлдэл-3    3      8        2     25      33          31       23        23
+ Task.4      5      4        3     33      37          34       30        30
+
+ Average turnaround time: 27.50
+ Average waiting time:    18.25
+ Average response time:   18.25
+ Total time: 37, CPU busy: 37, utilization: 100.0%
+ Throughput: 10.81 tasks per 100 time units, context switches: 3

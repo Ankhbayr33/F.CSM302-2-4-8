@@ -22,7 +22,7 @@ window.Compare = (function () {
   function barChart(box, rows, metric) {
     const wrap = document.createElement("div");
     const h3 = document.createElement("h3");
-    h3.textContent = metric.title + " (бага нь сайн)";
+    h3.textContent = metric.title + " (бага нь сайн, ★ = хамгийн бага)";
     wrap.appendChild(h3);
 
     const values = rows.map(r => r.summary[metric.key]);
@@ -46,12 +46,17 @@ window.Compare = (function () {
         class: "bar" + (best ? " best" : "") }, svg);
       const t = el("text", { x: labelW + w + 6, y: y + barH / 2 + 4,
         class: "val" }, svg);
-      t.textContent = fmt(v) + (best ? "  ★ хамгийн бага" : "");
+      t.textContent = fmt(v) + (best ? " ★" : "");
     });
     box.appendChild(wrap);
   }
 
-  function table(tbl, rows) {
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  function table(tbl, rows, failed) {
     const cols = [
       ["avg_turnaround", "Дундаж TAT"], ["avg_waiting", "Дундаж WT"],
       ["avg_response", "Дундаж RT"], ["context_switches", "Context switch"],
@@ -73,14 +78,20 @@ window.Compare = (function () {
       });
       html += "</tr>";
     });
+    // algorithms that could not run are listed with their own reason (A3)
+    (failed || []).forEach(f => {
+      html += '<tr class="failed"><td>' + Api.LABELS[f.id] + '</td><td colspan="' +
+        cols.length + '">✖ ажиллаагүй: ' + esc(f.error) + "</td></tr>";
+    });
     tbl.innerHTML = html + "</tbody>";
   }
 
-  function render(results, quantum) {
+  /* rows: successful results with an id; failed: [{id, error}] (A3) */
+  function render(rows, quantum, failed) {
     const panel = document.getElementById("compare-panel");
     const charts = document.getElementById("compare-charts");
     const gantts = document.getElementById("compare-gantts");
-    const rows = results.map((r, i) => Object.assign({ id: Api.ALGORITHMS[i] }, r));
+    failed = failed || [];
 
     panel.hidden = false;
     document.getElementById("cmp-sub").textContent =
@@ -92,7 +103,7 @@ window.Compare = (function () {
     // same time scale for every algorithm so the bars are comparable
     const total = Math.max(...rows.map(r => r.summary.total_time));
     rows.forEach(r => Gantt.renderCompact(gantts, r, total, Api.LABELS[r.id]));
-    table(document.getElementById("compare-table"), rows);
+    table(document.getElementById("compare-table"), rows, failed);
   }
 
   function hide() {

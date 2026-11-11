@@ -1,0 +1,5 @@
+# Cyrillic task names incl. Mongolian letters (review A2)
+Процесс1, 4, 20
+Өгөгдөл_2, 2, 5
+Үйлдэл-3, 3, 8, 2
+Task.4, 5, 4, 3

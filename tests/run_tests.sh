@@ -9,6 +9,8 @@
 # 2. error tests   : invalid input must exit with status 1 and a clear message
 # 3. option tests  : invalid command-line arguments
 # 4. reference     : random task sets compared with tests/reference_check.py
+# 5. UI            : tests/ui_test.js in headless Chromium (skipped when
+#                    Node.js or Playwright is not installed)
 
 cd "$(dirname "$0")/.." || exit 1
 
@@ -82,6 +84,9 @@ check_error not_a_number.txt      "priority 'four' must be an integer"
 check_error negative_arrival.txt  "arrival time '-1' must be a non-negative integer"
 check_error burst_too_large.txt   "CPU burst '2000000' must be a positive integer"
 check_error too_many_slices.txt   "quantum too small" rr
+check_error name_too_long_cyrillic.txt "use Latin or Cyrillic letters, digits, _ - ., at most 31 characters"
+check_error invalid_utf8.txt      "invalid task name"
+check_error cjk_name.txt          "invalid task name '任务'"
 
 # ------------------------------------------------------------------
 echo "3. Command-line option tests"
@@ -126,6 +131,18 @@ if command -v python3 >/dev/null 2>&1; then
     fi
 else
     echo "  SKIP  python3 not found"
+fi
+
+# ------------------------------------------------------------------
+echo "5. UI test (tests/ui_test.js)"
+if command -v node >/dev/null 2>&1 && node -e "require('playwright')" >/dev/null 2>&1; then
+    if node tests/ui_test.js; then
+        ok "UI behaves as expected (A2, A3, A4 and regressions)"
+    else
+        bad "UI test"
+    fi
+else
+    echo "  SKIP  Node.js + Playwright not found (npm install playwright)"
 fi
 
 # ------------------------------------------------------------------

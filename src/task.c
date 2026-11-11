@@ -31,8 +31,8 @@ Task *task_create(const char *name, int priority, int burst, int arrival)
     if (t == NULL)
         return NULL;
 
-    strncpy(t->name, name, MAX_NAME_LEN);
-    t->name[MAX_NAME_LEN] = '\0';
+    strncpy(t->name, name, MAX_NAME_BYTES);
+    t->name[MAX_NAME_BYTES] = '\0';
     t->tid = new_tid();
     t->priority = priority;
     t->burst = burst;

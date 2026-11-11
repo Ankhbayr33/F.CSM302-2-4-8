@@ -25,9 +25,15 @@
 
   /* ---------------- input helpers ---------------- */
 
+  const DEFAULT_QUANTUM = 10;
+
+  function validQuantum(raw) {
+    return /^\d+$/.test(raw) && +raw >= 1 && +raw <= 1000000;
+  }
+
   function readQuantum() {
     const raw = $("quantum").value.trim();
-    if (!/^\d+$/.test(raw) || +raw < 1 || +raw > 1000000)
+    if (!validQuantum(raw))
       throw new Error("Time quantum нь 1-ээс 1000000 хүртэлх бүхэл тоо байх ёстой (одоо: “" + raw + "”).");
     return +raw;
   }
@@ -40,6 +46,10 @@
 
   function updateQuantumField() {
     const uses = RR_ALGS.has($("algorithm").value);
+    // A4: a wrong value left from RR must not block FCFS/SJF/Priority,
+    // and a disabled field cannot be edited, so restore the default.
+    if (!uses && !validQuantum($("quantum").value.trim()))
+      $("quantum").value = DEFAULT_QUANTUM;
     $("quantum").disabled = !uses;
     $("quantum-field").classList.toggle("field-disabled", !uses);
     $("quantum-field").title = uses ? "" : "Энэ алгоритм quantum ашиглахгүй";
@@ -68,14 +78,19 @@
   }
 
   async function runSelected() {
+    const algorithm = $("algorithm").value;
     let quantum, tasks;
-    try { quantum = readQuantum(); tasks = readTasks(); }
+    try {
+      // the quantum is checked only for the algorithms that use it (A4)
+      quantum = RR_ALGS.has(algorithm) ? readQuantum() : DEFAULT_QUANTUM;
+      tasks = readTasks();
+    }
     catch (e) { showMessage(e.message); return; }
 
     setBusy(true);
     showMessage("");
     try {
-      const r = await Api.run($("algorithm").value, quantum, tasks);
+      const r = await Api.run(algorithm, quantum, tasks);
       if (r.error) {
         clearResult();
         showMessage("C програм оролтыг хүлээж авсангүй:\n" + r.error);
@@ -99,16 +114,25 @@
     showMessage("");
     try {
       const { results } = await Api.compare(quantum, tasks);
-      const bad = results.find(r => r.error);
-      if (bad) {
+      const rows = results.map((r, i) => Object.assign({ id: Api.ALGORITHMS[i] }, r));
+      const ok = rows.filter(r => !r.error);
+      const failed = rows.filter(r => r.error);
+      if (ok.length === 0) {                 // the input itself is wrong
         clearResult();
-        showMessage("C програм оролтыг хүлээж авсангүй:\n" + bad.error);
+        showMessage("C програм оролтыг хүлээж авсангүй:\n" + failed[0].error);
         return;
       }
-      results.forEach(Api.validateResult);
-      Compare.render(results, quantum);
-      const idx = Api.ALGORITHMS.indexOf($("algorithm").value);
-      loadResult(results[idx], false);
+      ok.forEach(Api.validateResult);
+      // A3: one failing algorithm must not hide the others
+      Compare.render(ok, quantum, failed);
+      const selected = ok.find(r => r.id === $("algorithm").value) || ok[0];
+      loadResult(selected, false);
+      if (failed.length) {
+        const lines = failed.map(r => "• " + Api.LABELS[r.id] + ": " + r.error);
+        const warn = (selected.warnings || []).concat(
+          [failed.length + " алгоритм ажиллаагүй тул харьцуулалтаас хасав:"], lines);
+        showMessage(warn.join("\n"), "warning");
+      }
     } catch (e) {
       showMessage(e.message);
     } finally {

@@ -1,0 +1,4 @@
+﻿# UTF-8 BOM at the start of the file (review A1) and end-of-line comments (A5)
+T1, 4, 20          # name, priority, burst
+T2, 2, 25, 5       # 4th field = arrival (optional)
+T3, 3, 10, 30

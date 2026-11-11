@@ -5,6 +5,7 @@
 #include "cpu.h"
 #include "stats.h"
 #include "task.h"
+#include "utf8.h"
 
 #define GANTT_PER_ROW 12
 
@@ -46,13 +47,13 @@ void stats_compute(Summary *s)
 
 static int cell_width(const Segment *g)
 {
-    int w = g->task ? (int)strlen(g->task->name) + 2 : 6;  /* " idle " */
+    int w = g->task ? utf8_width(g->task->name) + 2 : 6;  /* " idle " */
     return w < 6 ? 6 : w;
 }
 
 static void print_centered(FILE *out, const char *s, int width)
 {
-    int len = (int)strlen(s);
+    int len = utf8_width(s);           /* characters, not bytes */
     int left = (width - len) / 2;
     fprintf(out, "%*s%s%*s", left, "", s, width - len - left, "");
 }
@@ -88,8 +89,9 @@ void stats_print_table(FILE *out, const Summary *s)
           "Turnaround  Waiting  Response\n", out);
     for (int i = 0; i < task_count(); i++) {
         const Task *t = task_get(i);
-        fprintf(out, " %-8s %4d %6d %8d %6d %7d %11d %8d %9d\n",
-                t->name, t->priority, t->burst, t->arrival, t->start,
+        int pad = 8 - utf8_width(t->name);
+        fprintf(out, " %s%*s %4d %6d %8d %6d %7d %11d %8d %9d\n",
+                t->name, pad > 0 ? pad : 0, "", t->priority, t->burst, t->arrival, t->start,
                 t->completion, turnaround(t), waiting(t), response(t));
     }
     fprintf(out,

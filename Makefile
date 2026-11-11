@@ -12,7 +12,7 @@ CFLAGS  ?= -std=c11 -Wall -Wextra -pedantic -O2
 SRC     := src
 OBJ     := build
 
-COMMON  := driver list cpu task stats
+COMMON  := driver list cpu task stats utf8
 COMMON_OBJS := $(addprefix $(OBJ)/,$(addsuffix .o,$(COMMON)))
 HEADERS := $(wildcard $(SRC)/*.h)
 

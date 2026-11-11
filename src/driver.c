@@ -5,7 +5,9 @@
  * Extension: an optional 4th field gives the arrival time (default 0).
  *     T1, 4, 20
  *     T2, 2, 25, 5
- * Blank lines and lines starting with '#' are ignored.
+ * Blank lines are ignored; '#' starts a comment (a whole line or the end
+ * of a line). A UTF-8 byte order mark at the start of the file is skipped.
+ * Task names: Latin or Cyrillic letters, digits, _ - . (at most 31 chars).
  *
  * Usage:  ./fcfs [-q quantum] [-j] schedule.txt
  *     -q N   time quantum for RR / Priority-RR (default 10)
@@ -21,6 +23,7 @@
 #include "schedulers.h"
 #include "stats.h"
 #include "task.h"
+#include "utf8.h"
 
 #define LINE_SIZE    512
 #define MAX_FIELDS   6
@@ -31,7 +34,7 @@
 int time_quantum = QUANTUM;
 
 typedef struct {
-    char name[MAX_NAME_LEN + 1];
+    char name[MAX_NAME_BYTES + 1];
     int priority, burst, arrival;
 } TaskSpec;
 
@@ -43,8 +46,8 @@ static int warning_count = 0;
 
 static void fatal(const char *fmt, const char *a, int line, const char *b)
 {
-    char msg[256];
-    char body[200];
+    char msg[640];
+    char body[600];
     snprintf(body, sizeof body, fmt, a ? a : "", b ? b : "");
     if (line > 0)
         snprintf(msg, sizeof msg, "line %d: %s", line, body);
@@ -154,15 +157,34 @@ static int split_fields(char *line, char *field[], int max)
     return count;
 }
 
+/* Cyrillic letters, incl. Mongolian Ө ө Ү ү (block U+0400-U+04FF without
+ * the signs and combining marks U+0482-U+0489) */
+static int is_cyrillic_letter(unsigned cp)
+{
+    return (cp >= 0x0400 && cp <= 0x0481) || (cp >= 0x048A && cp <= 0x04FF);
+}
+
 static int valid_name(const char *s)
 {
-    if (*s == '\0' || strlen(s) > MAX_NAME_LEN)
+    int chars = 0;
+
+    if (*s == '\0' || strlen(s) > MAX_NAME_BYTES)
         return 0;
-    for (; *s; s++)
-        if (!isalnum((unsigned char)*s) && *s != '_' && *s != '-'
-            && *s != '.')
+    while (*s) {
+        unsigned cp;
+        int len = utf8_decode(s, &cp);
+        if (len < 0)
+            return 0;                         /* not valid UTF-8 */
+        if (cp < 0x80) {
+            if (!isalnum((int)cp) && cp != '_' && cp != '-' && cp != '.')
+                return 0;
+        } else if (!is_cyrillic_letter(cp)) {
             return 0;
-    return 1;
+        }
+        s += len;
+        chars++;
+    }
+    return chars <= MAX_NAME_LEN;
 }
 
 static void read_schedule(const char *path)
@@ -182,9 +204,14 @@ static void read_schedule(const char *path)
             fatal("line too long%s%s", NULL, lineno, NULL);
 
         char *p = line;
+        if (lineno == 1 && utf8_has_bom(p))
+            p += 3;                           /* skip UTF-8 BOM (EF BB BF) */
+        char *hash = strchr(p, '#');          /* '#' never occurs in a name */
+        if (hash)
+            *hash = '\0';                     /* drop the comment */
         while (*p == ' ' || *p == '\t')
             p++;
-        if (*p == '#' || *p == '\n' || *p == '\r' || *p == '\0')
+        if (*p == '\n' || *p == '\r' || *p == '\0')
             continue;
 
         int n = split_fields(p, field, MAX_FIELDS);
@@ -198,8 +225,9 @@ static void read_schedule(const char *path)
 
         TaskSpec *t = &specs[spec_count];
         if (!valid_name(field[0]))
-            fatal("invalid task name '%s' (use letters, digits, _ - ., "
-                  "at most 31 characters)%s", field[0], lineno, NULL);
+            fatal("invalid task name '%s' (use Latin or Cyrillic letters, "
+                  "digits, _ - ., at most 31 characters)%s",
+                  field[0], lineno, NULL);
         snprintf(t->name, sizeof t->name, "%s", field[0]);
 
         if (parse_int_range(field[1], MIN_PRIORITY, MAX_PRIORITY,

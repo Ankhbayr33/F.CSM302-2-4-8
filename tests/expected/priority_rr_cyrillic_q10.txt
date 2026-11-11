@@ -1,0 +1,23 @@
+Algorithm: Priority-RR, time quantum: 10, tasks: 4
+
+Running task = [Процесс1] [4] [20] for 10 units.
+Running task = [Task.4] [5] [4] for 4 units.
+Running task = [Процесс1] [4] [20] for 10 units.
+Running task = [Үйлдэл-3] [3] [8] for 8 units.
+Running task = [Өгөгдөл_2] [2] [5] for 5 units.
+
+Gantt chart:
+| Процесс1 | Task.4 | Процесс1 | Үйлдэл-3 | Өгөгдөл_2 |
+0          10       14         24         32          37
+
+ Task      Pri  Burst  Arrival  Start  Finish  Turnaround  Waiting  Response
+ Процесс1    4     20        0      0      24          24        4         0
+ Өгөгдөл_2    2      5        0     32      37          37       32        32
+ Үйлдэл-3    3      8        2     24      32          30       22        22
+ Task.4      5      4        3     10      14          11        7         7
+
+ Average turnaround time: 25.50
+ Average waiting time:    16.25
+ Average response time:   15.25
+ Total time: 37, CPU busy: 37, utilization: 100.0%
+ Throughput: 10.81 tasks per 100 time units, context switches: 4

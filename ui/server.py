@@ -60,6 +60,7 @@ def run_scheduler(alg, quantum, tasks_text):
         if alg in ("fcfs", "sjf", "priority"):
             cmd = [exe, "-j", path]          # quantum not used
         proc = subprocess.run(cmd, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace",
                               timeout=RUN_TIMEOUT)
     except subprocess.TimeoutExpired:
         return {"error": f"{alg} did not finish within {RUN_TIMEOUT} s"}
